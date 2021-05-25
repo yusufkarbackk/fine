@@ -1,8 +1,10 @@
 part of 'screens.dart';
 
-class LoginScreen extends StatelessWidget {
+class SignUpScreen extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class LoginScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Sign In",
+                          Text("Sign Up",
                               style: kmainText.copyWith(
                                   fontSize: 40,
                                   color: Colors.black,
@@ -47,6 +49,41 @@ class LoginScreen extends StatelessWidget {
                                       filled: true,
                                       fillColor: Colors.white,
                                       labelText: "Email",
+                                      labelStyle:
+                                          TextStyle(color: Colors.green[600]),
+                                    )),
+                                SizedBox(height: 10),
+                                TextField(
+                                    controller: emailController,
+                                    keyboardType: TextInputType.emailAddress,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.green[600])),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      labelText: "Name",
+                                      labelStyle:
+                                          TextStyle(color: Colors.green[600]),
+                                    )),
+                                SizedBox(height: 10),
+                                TextField(
+                                    controller: emailController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.green[600])),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      labelText: "Amount",
+                                      hintText: "Your First Amount of Income",
                                       labelStyle:
                                           TextStyle(color: Colors.green[600]),
                                     )),
@@ -76,10 +113,21 @@ class LoginScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 50,
                     child: RaisedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // TODO: INT TO STRING PROBLEM
+                        // AuthServices.signUp(
+                        //   emailController.text,
+                        //   passwordController.text,
+                        // amountController.,
+                        //   nameController.text
+                        // );
+                      },
                       color: Colors.green[400],
                       child: Center(
-                        child: Text("Login"),
+                        child: Text(
+                          "Sign Up",
+                          style: ksecondaryText,
+                        ),
                       ),
                     ),
                   )

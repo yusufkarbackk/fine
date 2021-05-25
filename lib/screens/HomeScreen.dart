@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Hi Yusuf Karback,",
+                  Text("Hi ${firebaseUser.email}",
                       style: kmainText.copyWith(fontWeight: FontWeight.w700)),
                   SizedBox(
                     height: 22,
@@ -64,9 +64,14 @@ class HomeScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Expanded(
-                              child: ActivitiesWidget(
-                                icon: Icons.payments_rounded,
-                                text: "Income",
+                              child: GestureDetector(
+                                onTap: () {
+                                  AuthServices.signOut();
+                                },
+                                child: ActivitiesWidget(
+                                  icon: Icons.payments_rounded,
+                                  text: "Income",
+                                ),
                               ),
                             ),
                             SizedBox(

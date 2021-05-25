@@ -5,6 +5,6 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     User firebaseUser = Provider.of<User>(context);
 
-    return (firebaseUser == null) ? LoginScreen() : HomeScreen(firebaseUser);
+    return (firebaseUser == null) ? WelcomeScreen() : HomeScreen(firebaseUser);
   }
 }
