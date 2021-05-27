@@ -76,7 +76,15 @@ class LoginScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 50,
                     child: RaisedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        User user = await AuthServices.signIn(
+                            emailController.text, passwordController.text);
+                        String userId = user.uid;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen(userId)));
+                      },
                       color: Colors.green[400],
                       child: Center(
                         child: Text("Login"),

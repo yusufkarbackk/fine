@@ -28,7 +28,6 @@ dependencies:
   google_fonts: ^1.1.0
   provider: ^4.0.4
   firebase_core : ^0.7.0
-  email_validator: ^1.0.4
   cloud_firestore: ^0.16.0
 
 dev_dependencies:

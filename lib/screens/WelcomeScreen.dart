@@ -14,8 +14,7 @@ class WelcomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text("Welcome to Fine",
-                  style:
-                      kmainText.copyWith(color: Colors.black, fontSize: 40)),
+                  style: kmainText.copyWith(color: Colors.black, fontSize: 40)),
               Container(
                 child: Column(
                   children: [
@@ -46,6 +45,19 @@ class WelcomeScreen extends StatelessWidget {
                       child: Center(
                         child: Text(
                           "Sign Up",
+                          style: ksecondaryText.copyWith(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    RaisedButton(
+                      elevation: 10,
+                      onPressed: () {
+                        AuthServices.signInAnonym();
+                      },
+                      color: Colors.white,
+                      child: Center(
+                        child: Text(
+                          "Anonymous",
                           style: ksecondaryText.copyWith(color: Colors.black),
                         ),
                       ),

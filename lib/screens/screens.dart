@@ -1,3 +1,4 @@
+import 'package:fine/models/Models.dart';
 import 'package:fine/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

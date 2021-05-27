@@ -1,8 +1,19 @@
 part of 'screens.dart';
 
-class HomeScreen extends StatelessWidget {
-  final User firebaseUser;
-  HomeScreen(this.firebaseUser);
+class HomeScreen extends StatefulWidget {
+  final String fineUserId;
+  HomeScreen(this.fineUserId);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    FineUserServices.getUser(widget.fineUserId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,8 +27,18 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Hi ${firebaseUser.email}",
-                      style: kmainText.copyWith(fontWeight: FontWeight.w700)),
+                  FutureBuilder<FineUser>(
+                      future: FineUserServices.getUser(widget.fineUserId),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text("Hi, ${snapshot.data.name}",
+                              style: kmainText);
+                        } else if (!snapshot.hasData) {
+                          return Text(widget.fineUserId);
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      }),
                   SizedBox(
                     height: 22,
                   ),
@@ -29,11 +50,20 @@ class HomeScreen extends StatelessWidget {
                       )),
                   SizedBox(height: 8),
                   Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Rp2.450.000",
-                        style: knumberText,
-                      )),
+                    alignment: Alignment.center,
+                    child: FutureBuilder<FineUser>(
+                        future: FineUserServices.getUser(widget.fineUserId),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              "Rp${snapshot.data.amount}",
+                              style: knumberText,
+                            );
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        }),
+                  ),
                   SizedBox(
                     height: 18,
                   ),
@@ -66,7 +96,22 @@ class HomeScreen extends StatelessWidget {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  AuthServices.signOut();
+                                  showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      builder: (context) =>
+                                          FutureBuilder<FineUser>(
+                                              future: FineUserServices.getUser(
+                                                  widget.fineUserId),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasData) {
+                                                  return IncomeScreen(
+                                                      widget.fineUserId,
+                                                      snapshot.data.amount);
+                                                } else {
+                                                  return CircularProgressIndicator();
+                                                }
+                                              }));
                                 },
                                 child: ActivitiesWidget(
                                   icon: Icons.payments_rounded,

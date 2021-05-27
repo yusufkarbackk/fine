@@ -3,8 +3,8 @@ part of 'screens.dart';
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    User firebaseUser = Provider.of<User>(context);
+    User fineUser = Provider.of<User>(context);
 
-    return (firebaseUser == null) ? WelcomeScreen() : HomeScreen(firebaseUser);
+    return (fineUser == null) ? WelcomeScreen() : HomeScreen(fineUser.uid);
   }
 }

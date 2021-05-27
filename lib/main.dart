@@ -1,3 +1,4 @@
+import 'package:fine/models/Models.dart';
 import 'package:fine/screens/screens.dart';
 import 'package:fine/services/Services.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider.value(
       value: AuthServices.firebaseUserStream,
-      child: MaterialApp(
-        home: Wrapper(),
+      child: ChangeNotifierProvider(
+        create: (context) => Category(),
+        child: MaterialApp(
+          home: Wrapper(),
+        ),
       ),
     );
   }

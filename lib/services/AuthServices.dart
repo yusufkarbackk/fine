@@ -1,22 +1,56 @@
 part of 'Services.dart';
 
-class AuthServices {
+class AuthServices extends ChangeNotifier {
   static FirebaseAuth _auth = FirebaseAuth.instance;
 
-  static Future signIn(String email, String password) async {
-    UserCredential result = await _auth.signInWithEmailAndPassword(
-        email: email, password: password);
+  static Future<User> signInAnonym() async {
+    try {
+      UserCredential result = await _auth.signInAnonymously();
+
+      User user = result.user;
+      return user;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 
-  static Future<FineUser> signUp(
+  static Future<User> signIn(String email, String password) async {
+    try {
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+
+      User user = result.user;
+      return user;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  static String userId() {
+    String user = _auth.currentUser.uid;
+
+    return user;
+  }
+
+  static Stream<User> get firebaseUserStream {
+    return _auth.authStateChanges();
+  }
+
+  static Future<User> signUp(
       String email, String password, int amount, String name) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      FineUser firebaseUser =
+      FineUser fineUser =
           result.user.convertToFineUser(amount: amount, name: name);
-      return firebaseUser;
+
+      await FineUserServices.updateUser(fineUser);
+      User authResult = result.user;
+
+      return authResult;
     } catch (e) {
       print(e.toString());
       return null;
@@ -24,6 +58,4 @@ class AuthServices {
   }
 
   static Future<void> signOut() => _auth.signOut();
-
-  static Stream<User> get firebaseUserStream => _auth.authStateChanges();
 }
