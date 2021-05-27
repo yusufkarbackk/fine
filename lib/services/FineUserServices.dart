@@ -17,15 +17,17 @@ class FineUserServices extends ChangeNotifier {
         name: snapshot.data()["name"], amount: snapshot.data()["amount"]);
   }
 
-  void getFineUser(String id) {
-    getUser(id);
-    notifyListeners();
-  }
-
   static Future<void> updateUserBalance(String userId, int amount,
-      {int lastAmount}) async {
-    _fineUserCollection.doc(userId).update({"amount": amount + lastAmount});
+      {int lastAmount, bool isIncome}) async {
+    if (isIncome == true) {
+      _fineUserCollection.doc(userId).update({"amount": amount + lastAmount});
+    } else {
+      _fineUserCollection.doc(userId).update({"amount": lastAmount - amount});
+    }
   }
 
-  static Stream<DocumentSnapshot> getUserBalance(String id) {}
+  static Stream<DocumentSnapshot> getUserBalance(String id) {
+    Stream<DocumentSnapshot> snapshot = _fineUserCollection.doc(id).snapshots();
+    return snapshot;
+  }
 }

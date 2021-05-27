@@ -12,6 +12,14 @@ class AmountServices {
       "isIncome": transaction.isIncome,
       "userId": transaction.userId
     });
+  }
 
+  static Stream<QuerySnapshot> getTransactions(String id) {
+    Stream<QuerySnapshot> snapshots = _amountCollection
+        .orderBy('time', descending: true)
+        .where('userId', isEqualTo: id)
+        .snapshots()
+        .take(3);
+    return snapshots;
   }
 }

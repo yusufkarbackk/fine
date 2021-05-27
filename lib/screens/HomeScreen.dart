@@ -51,12 +51,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 8),
                   Align(
                     alignment: Alignment.center,
-                    child: FutureBuilder<FineUser>(
-                        future: FineUserServices.getUser(widget.fineUserId),
+                    child: StreamBuilder<DocumentSnapshot>(
+                        stream:
+                            FineUserServices.getUserBalance(widget.fineUserId),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return Text(
-                              "Rp${snapshot.data.amount}",
+                              NumberFormat.currency(
+                                      locale: "id_IDR",
+                                      decimalDigits: 0,
+                                      symbol: "Rp ")
+                                  .format(snapshot.data.data()['amount']),
                               style: knumberText,
                             );
                           } else {
@@ -123,18 +128,43 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 14,
                             ),
                             Expanded(
-                              child: ActivitiesWidget(
-                                icon: Icons.money_off_csred_rounded,
-                                text: "Spending",
+                              child: GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      builder: (context) =>
+                                          FutureBuilder<FineUser>(
+                                              future: FineUserServices.getUser(
+                                                  widget.fineUserId),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasData) {
+                                                  return SpendingScreen(
+                                                      widget.fineUserId,
+                                                      snapshot.data.amount);
+                                                } else {
+                                                  return CircularProgressIndicator();
+                                                }
+                                              }));
+                                },
+                                child: ActivitiesWidget(
+                                  icon: Icons.money_off,
+                                  text: "Spending",
+                                ),
                               ),
                             ),
                             SizedBox(
                               width: 14,
                             ),
                             Expanded(
-                              child: ActivitiesWidget(
-                                icon: Icons.data_usage_rounded,
-                                text: "Reports",
+                              child: GestureDetector(
+                                onTap: () {
+                                  AuthServices.signOut();
+                                },
+                                child: ActivitiesWidget(
+                                  icon: Icons.data_usage_rounded,
+                                  text: "Reports",
+                                ),
                               ),
                             )
                           ],
@@ -148,20 +178,32 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 16,
                         ),
-                        TransactionWidget(
-                          text: "Foods & Baverages",
-                          amount: -50000,
-                          isIncome: false,
-                        ),
-                        TransactionWidget(
-                          text: "Foods & Baverages",
-                          amount: -50000,
-                          isIncome: false,
-                        ),
-                        TransactionWidget(
-                          text: "Salary",
-                          amount: 50000,
-                          isIncome: true,
+                        StreamBuilder<QuerySnapshot>(
+                          stream:
+                              AmountServices.getTransactions(widget.fineUserId),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              final transactions = snapshot.data.docs.take(3);
+                              List<TransactionWidget> transactionlist = [];
+                              for (var transaction in transactions) {
+                                final text = transaction.data()['category'];
+                                final amount = transaction.data()['amount'];
+                                final isIncome = transaction.data()['isIncome'];
+                                transactionlist.add(TransactionWidget(
+                                  text: text,
+                                  amount: amount,
+                                  isIncome: isIncome,
+                                ));
+                              }
+                              return Column(
+                                children: transactionlist,
+                              );
+                            } else if (snapshot.hasData == false) {
+                              return Text("No Transaction");
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
                         )
                       ],
                     )
@@ -173,5 +215,21 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  Column generateTransactionList(List<TransactionModel> transactions) {
+    transactions.sort((transaction1, transaction2) =>
+        transaction2.time.compareTo(transaction1.time));
+    return Column(
+        children: transactions
+            .map((transaction) => Padding(
+                  padding: EdgeInsets.only(bottom: 12),
+                  child: TransactionWidget(
+                    amount: transaction.amount,
+                    isIncome: transaction.isIncome,
+                    text: transaction.category,
+                  ),
+                ))
+            .toList());
   }
 }

@@ -5,12 +5,16 @@ class TextFieldWidget extends StatelessWidget {
   final TextInputType inputType;
   final String labelText;
   final bool isPassword;
+  final TextStyle labelStyle;
+  final BorderSide borderSide;
 
   TextFieldWidget(
       {this.controller,
       this.inputType,
       this.labelText,
-      this.isPassword = false});
+      this.isPassword = false,
+      this.labelStyle,
+      this.borderSide});
   @override
   Widget build(BuildContext context) {
     return TextField(
@@ -21,12 +25,11 @@ class TextFieldWidget extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.green[600])),
+          focusedBorder: OutlineInputBorder(borderSide: borderSide),
           filled: true,
           fillColor: Colors.white,
           labelText: labelText,
-          labelStyle: TextStyle(color: Colors.green[600]),
+          labelStyle: labelStyle,
         ));
   }
 }

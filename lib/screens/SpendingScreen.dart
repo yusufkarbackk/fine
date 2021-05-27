@@ -1,16 +1,16 @@
 part of 'screens.dart';
 
-class IncomeScreen extends StatefulWidget {
+class SpendingScreen extends StatefulWidget {
   final String id;
   final int amount;
-  IncomeScreen(this.id, this.amount);
+  SpendingScreen(this.id, this.amount);
   @override
-  _IncomeScreenState createState() => _IncomeScreenState();
+  _SpendingScreenState createState() => _SpendingScreenState();
 }
 
-class _IncomeScreenState extends State<IncomeScreen> {
+class _SpendingScreenState extends State<SpendingScreen> {
   final TextEditingController amountController = TextEditingController();
-  String categoryValue = 'Salary';
+  String categoryValue = 'Food';
 
   @override
   Widget build(BuildContext context) {
@@ -31,17 +31,17 @@ class _IncomeScreenState extends State<IncomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Enter Your Income",
-                    style: ksecondaryText.copyWith(color: Colors.black)),
+                Text("Enter Your Spending",
+                    style: ksecondaryText.copyWith(color: Colors.red)),
                 SizedBox(
                   height: 18,
                 ),
                 TextFieldWidget(
                   controller: amountController,
                   inputType: TextInputType.number,
-                  labelText: "Income Amount",
-                  borderSide: BorderSide(color: Colors.green[600]),
-                  labelStyle: TextStyle(color: Colors.green),
+                  labelText: "Spending Amount",
+                  borderSide: BorderSide(color: Colors.red[600]),
+                  labelStyle: TextStyle(color: Colors.red),
                 ),
                 SizedBox(
                   height: 12,
@@ -49,11 +49,12 @@ class _IncomeScreenState extends State<IncomeScreen> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text("Income Category",
+                      Text("Spending Category",
                           style: ksecondaryText.copyWith(color: Colors.black)),
                       DropdownButton<String>(
                         value: categoryValue,
-                        items: ['Salary', 'Gifts'].map((String value) {
+                        items: ['Food', 'Transportation', 'Entertainment']
+                            .map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -73,7 +74,7 @@ class _IncomeScreenState extends State<IncomeScreen> {
                     TransactionModel transaction = TransactionModel(
                         amount: amount,
                         category: categoryValue,
-                        isIncome: true,
+                        isIncome: false,
                         time: DateTime.now(),
                         userId: widget.id);
 
@@ -85,7 +86,7 @@ class _IncomeScreenState extends State<IncomeScreen> {
 
                     Navigator.pop(context);
                   },
-                  color: Colors.green[400],
+                  color: Colors.red[400],
                   child: Center(
                     child: Text("Continue", style: ksecondaryText),
                   ),
