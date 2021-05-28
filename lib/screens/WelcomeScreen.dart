@@ -49,19 +49,6 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    RaisedButton(
-                      elevation: 10,
-                      onPressed: () {
-                        AuthServices.signInAnonym();
-                      },
-                      color: Colors.white,
-                      child: Center(
-                        child: Text(
-                          "Anonymous",
-                          style: ksecondaryText.copyWith(color: Colors.black),
-                        ),
-                      ),
-                    )
                   ],
                 ),
               )

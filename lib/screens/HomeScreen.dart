@@ -10,11 +10,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initState() {
-    FineUserServices.getUser(widget.fineUserId);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kmainColor,
@@ -160,6 +155,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: GestureDetector(
                                 onTap: () {
                                   AuthServices.signOut();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              WelcomeScreen()));
                                 },
                                 child: ActivitiesWidget(
                                   icon: Icons.data_usage_rounded,
@@ -215,21 +215,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
-
-  Column generateTransactionList(List<TransactionModel> transactions) {
-    transactions.sort((transaction1, transaction2) =>
-        transaction2.time.compareTo(transaction1.time));
-    return Column(
-        children: transactions
-            .map((transaction) => Padding(
-                  padding: EdgeInsets.only(bottom: 12),
-                  child: TransactionWidget(
-                    amount: transaction.amount,
-                    isIncome: transaction.isIncome,
-                    text: transaction.category,
-                  ),
-                ))
-            .toList());
   }
 }

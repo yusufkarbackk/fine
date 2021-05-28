@@ -1,7 +1,15 @@
 part of 'screens.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
+  bool isSignIn = false;
+  bool isEmailValid = false;
+  bool isPasswordValid = false;
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -35,6 +43,12 @@ class LoginScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 TextField(
+                                    onChanged: (text) {
+                                      setState(() {
+                                        isEmailValid =
+                                            EmailValidator.validate(text);
+                                      });
+                                    },
                                     controller: emailController,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
@@ -52,6 +66,11 @@ class LoginScreen extends StatelessWidget {
                                     )),
                                 SizedBox(height: 10),
                                 TextField(
+                                    onChanged: (text) {
+                                      setState(() {
+                                        isPasswordValid = text.length >= 6;
+                                      });
+                                    },
                                     controller: passwordController,
                                     obscureText: true,
                                     decoration: InputDecoration(
@@ -75,21 +94,47 @@ class LoginScreen extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     height: 50,
-                    child: RaisedButton(
-                      onPressed: () async {
-                        User user = await AuthServices.signIn(
-                            emailController.text, passwordController.text);
-                        String userId = user.uid;
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen(userId)));
-                      },
-                      color: Colors.green[400],
-                      child: Center(
-                        child: Text("Login"),
-                      ),
-                    ),
+                    child: isSignIn
+                        ? Center(
+                            child: SpinKitFadingCircle(
+                              color: Colors.green[400],
+                            ),
+                          )
+                        : RaisedButton(
+                            onPressed: isEmailValid && isPasswordValid
+                                ? () async {
+                                    setState(() {
+                                      isSignIn = true;
+                                    });
+                                    SignInSignUpResult user =
+                                        await AuthServices.signIn(
+                                            emailController.text,
+                                            passwordController.text);
+                                    if (user.message != null) {
+                                      setState(() {
+                                        isSignIn = false;
+                                      });
+                                      Flushbar(
+                                        duration: Duration(seconds: 4),
+                                        flushbarPosition: FlushbarPosition.TOP,
+                                        backgroundColor: Color(0xFFFF5C83),
+                                        message: user.message,
+                                      )..show(context);
+                                    } else if (user.user != null) {
+                                      String userId = user.user.uid;
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomeScreen(userId)));
+                                    }
+                                  }
+                                : null,
+                            color: Colors.green[400],
+                            child: Center(
+                              child: Text("Login"),
+                            ),
+                          ),
                   )
                 ],
               ),

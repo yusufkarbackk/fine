@@ -7,6 +7,9 @@ import '../constants/constants.dart';
 import '../services/Services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flushbar/flushbar.dart';
 
 part 'HomeScreen.dart';
 part 'IncomeScreen.dart';

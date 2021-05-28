@@ -1,10 +1,21 @@
 part of 'screens.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
+  @override
+  _SignUpScreenState createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
+
+  bool isEmailValid = false;
+  bool isPasswordValid = false;
+  bool isNameValid = false;
+  bool isAmountValid = false;
+  bool isSignUp = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,18 +50,34 @@ class SignUpScreen extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     TextFieldWidget(
+                                      onChanged: (text) {
+                                        setState(() {
+                                          isNameValid = text.length > 0;
+                                        });
+                                      },
                                       controller: nameController,
                                       inputType: TextInputType.text,
                                       labelText: "Name",
                                     ),
                                     SizedBox(height: 10),
                                     TextFieldWidget(
+                                      onChanged: (text) {
+                                        setState(() {
+                                          isNameValid =
+                                              EmailValidator.validate(text);
+                                        });
+                                      },
                                       controller: emailController,
                                       inputType: TextInputType.emailAddress,
                                       labelText: "Email",
                                     ),
                                     SizedBox(height: 10),
                                     TextFieldWidget(
+                                      onChanged: (text) {
+                                        setState(() {
+                                          isNameValid = text.length > 6;
+                                        });
+                                      },
                                       controller: passwordController,
                                       inputType: TextInputType.text,
                                       labelText: "Password",
@@ -58,6 +85,11 @@ class SignUpScreen extends StatelessWidget {
                                     ),
                                     SizedBox(height: 10),
                                     TextFieldWidget(
+                                      onChanged: (text) {
+                                        setState(() {
+                                          isNameValid = text.length > 0;
+                                        });
+                                      },
                                       controller: amountController,
                                       inputType: TextInputType.number,
                                       labelText: "Amount",
@@ -67,34 +99,86 @@ class SignUpScreen extends StatelessWidget {
                               )
                             ],
                           )),
-                      Container(
-                        width: double.infinity,
-                        height: 50,
-                        child: RaisedButton(
-                          onPressed: () async {
-                            final int amount =
-                                int.tryParse(amountController.text);
-                            User user = await AuthServices.signUp(
-                                emailController.text,
-                                passwordController.text,
-                                amount,
-                                nameController.text);
-                            String userId = user.uid;
+                      isSignUp
+                          ? Center(
+                              child: SpinKitFadingCircle(
+                                color: Colors.green[400],
+                              ),
+                            )
+                          : Container(
+                              width: double.infinity,
+                              height: 50,
+                              child: RaisedButton(
+                                onPressed: () async {
+                                  if (isNameValid != true &&
+                                      isEmailValid != true &&
+                                      isPasswordValid != true) {
+                                    Flushbar(
+                                      duration: Duration(seconds: 4),
+                                      flushbarPosition: FlushbarPosition.TOP,
+                                      backgroundColor: Color(0xFFFF5C83),
+                                      message: "Please Fill All the Fields",
+                                    )..show(context);
+                                  } else if (isNameValid != true) {
+                                    Flushbar(
+                                      duration: Duration(seconds: 4),
+                                      flushbarPosition: FlushbarPosition.TOP,
+                                      backgroundColor: Color(0xFFFF5C83),
+                                      message: "Please Fill the Username Field",
+                                    )..show(context);
+                                  } else if (isEmailValid != true) {
+                                    Flushbar(
+                                      duration: Duration(seconds: 4),
+                                      flushbarPosition: FlushbarPosition.TOP,
+                                      backgroundColor: Color(0xFFFF5C83),
+                                      message: "Please Fill the Email Field",
+                                    )..show(context);
+                                  } else if (isPasswordValid != true) {
+                                    Flushbar(
+                                      duration: Duration(seconds: 4),
+                                      flushbarPosition: FlushbarPosition.TOP,
+                                      backgroundColor: Color(0xFFFF5C83),
+                                      message:
+                                          "Please Fill the Password Field with 6 or More Characters",
+                                    )..show(context);
+                                  }
+                                  final int amount =
+                                      int.tryParse(amountController.text);
+                                  SignInSignUpResult user =
+                                      await AuthServices.signUp(
+                                          emailController.text,
+                                          passwordController.text,
+                                          amount,
+                                          nameController.text);
+                                  if (user.message != null) {
+                                    setState(() {
+                                      isSignUp = false;
+                                    });
+                                    Flushbar(
+                                      duration: Duration(seconds: 4),
+                                      flushbarPosition: FlushbarPosition.TOP,
+                                      backgroundColor: Color(0xFFFF5C83),
+                                      message: user.message,
+                                    )..show(context);
+                                  } else if (user.user != null) {
+                                    String userId = user.user.uid;
 
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeScreen(userId)));
-                          },
-                          color: Colors.green[400],
-                          child: Center(
-                            child: Text(
-                              "Sign Up",
-                              style: ksecondaryText,
-                            ),
-                          ),
-                        ),
-                      )
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen(userId)));
+                                  }
+                                },
+                                color: Colors.green[400],
+                                child: Center(
+                                  child: Text(
+                                    "Sign Up",
+                                    style: ksecondaryText,
+                                  ),
+                                ),
+                              ),
+                            )
                     ],
                   )
                 ],

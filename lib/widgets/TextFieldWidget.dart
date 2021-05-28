@@ -7,6 +7,7 @@ class TextFieldWidget extends StatelessWidget {
   final bool isPassword;
   final TextStyle labelStyle;
   final BorderSide borderSide;
+  final Function onChanged;
 
   TextFieldWidget(
       {this.controller,
@@ -14,10 +15,12 @@ class TextFieldWidget extends StatelessWidget {
       this.labelText,
       this.isPassword = false,
       this.labelStyle,
-      this.borderSide});
+      this.borderSide,
+      this.onChanged});
   @override
   Widget build(BuildContext context) {
     return TextField(
+        onChanged: onChanged,
         obscureText: isPassword,
         controller: controller,
         keyboardType: inputType,
