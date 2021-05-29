@@ -10,4 +10,4 @@ TextStyle ksecondaryText = GoogleFonts.poppins(
 TextStyle knumberText = GoogleFonts.montserrat(
     textStyle: TextStyle(color: Colors.white, fontSize: 18));
 
-Color kmainColor = Colors.green[600];
+Color kmainColor = Colors.green[400];

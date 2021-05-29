@@ -58,41 +58,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       controller: nameController,
                                       inputType: TextInputType.text,
                                       labelText: "Name",
+                                      borderSide:
+                                          BorderSide(color: Colors.green[600]),
                                     ),
                                     SizedBox(height: 10),
                                     TextFieldWidget(
                                       onChanged: (text) {
                                         setState(() {
-                                          isNameValid =
+                                          isEmailValid =
                                               EmailValidator.validate(text);
                                         });
                                       },
                                       controller: emailController,
-                                      inputType: TextInputType.emailAddress,
+                                      inputType: TextInputType.text,
                                       labelText: "Email",
+                                      isPassword: false,
+                                      borderSide:
+                                          BorderSide(color: Colors.green[600]),
                                     ),
                                     SizedBox(height: 10),
                                     TextFieldWidget(
                                       onChanged: (text) {
                                         setState(() {
-                                          isNameValid = text.length > 6;
+                                          isPasswordValid = text.length >= 6;
                                         });
                                       },
                                       controller: passwordController,
                                       inputType: TextInputType.text,
                                       labelText: "Password",
                                       isPassword: true,
+                                      borderSide:
+                                          BorderSide(color: Colors.green[600]),
                                     ),
                                     SizedBox(height: 10),
                                     TextFieldWidget(
                                       onChanged: (text) {
                                         setState(() {
-                                          isNameValid = text.length > 0;
+                                          isAmountValid = text.length > 0;
                                         });
                                       },
                                       controller: amountController,
                                       inputType: TextInputType.number,
-                                      labelText: "Amount",
+                                      labelText: "Balance",
+                                      isPassword: false,
+                                      borderSide:
+                                          BorderSide(color: Colors.green[600]),
                                     ),
                                   ],
                                 ),
@@ -112,7 +122,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 onPressed: () async {
                                   if (isNameValid != true &&
                                       isEmailValid != true &&
-                                      isPasswordValid != true) {
+                                      isPasswordValid != true &&
+                                      isAmountValid != true) {
                                     Flushbar(
                                       duration: Duration(seconds: 4),
                                       flushbarPosition: FlushbarPosition.TOP,
@@ -141,33 +152,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       message:
                                           "Please Fill the Password Field with 6 or More Characters",
                                     )..show(context);
-                                  }
-                                  final int amount =
-                                      int.tryParse(amountController.text);
-                                  SignInSignUpResult user =
-                                      await AuthServices.signUp(
-                                          emailController.text,
-                                          passwordController.text,
-                                          amount,
-                                          nameController.text);
-                                  if (user.message != null) {
-                                    setState(() {
-                                      isSignUp = false;
-                                    });
+                                  } else if (isAmountValid != true) {
                                     Flushbar(
                                       duration: Duration(seconds: 4),
                                       flushbarPosition: FlushbarPosition.TOP,
                                       backgroundColor: Color(0xFFFF5C83),
-                                      message: user.message,
+                                      message:
+                                          "Please Fill the balance for your first income",
                                     )..show(context);
-                                  } else if (user.user != null) {
-                                    String userId = user.user.uid;
+                                  } else {
+                                    final int amount =
+                                        int.tryParse(amountController.text);
+                                    SignInSignUpResult user =
+                                        await AuthServices.signUp(
+                                            emailController.text,
+                                            passwordController.text,
+                                            amount,
+                                            nameController.text);
+                                    if (user.message != null) {
+                                      setState(() {
+                                        isSignUp = false;
+                                      });
+                                      Flushbar(
+                                        duration: Duration(seconds: 4),
+                                        flushbarPosition: FlushbarPosition.TOP,
+                                        backgroundColor: Color(0xFFFF5C83),
+                                        message: user.message,
+                                      )..show(context);
+                                    } else if (user.user != null) {
+                                      String userId = user.user.uid;
 
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                HomeScreen(userId)));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomeScreen(userId)));
+                                    }
                                   }
                                 },
                                 color: Colors.green[400],

@@ -8,6 +8,11 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+@override
+void initState() {
+  AuthServices.signOut();
+}
+
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
@@ -51,6 +56,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             FineUserServices.getUserBalance(widget.fineUserId),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
+                            if (snapshot.data.data()['amount'] < 0) {
+                              return Text(
+                                NumberFormat.currency(
+                                        locale: "id_IDR",
+                                        decimalDigits: 0,
+                                        symbol: "Rp ")
+                                    .format(snapshot.data.data()['amount']),
+                                style: knumberText.copyWith(color: Colors.red[600]),
+                              );
+                            }
                             return Text(
                               NumberFormat.currency(
                                       locale: "id_IDR",
@@ -187,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               List<TransactionWidget> transactionlist = [];
                               for (var transaction in transactions) {
                                 final text = transaction.data()['category'];
-                                final amount = transaction.data()['amount'];
+                                final int amount = transaction.data()['amount'];
                                 final isIncome = transaction.data()['isIncome'];
                                 transactionlist.add(TransactionWidget(
                                   text: text,
@@ -198,10 +213,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Column(
                                 children: transactionlist,
                               );
-                            } else if (snapshot.hasData == false) {
-                              return Text("No Transaction");
-                            } else {
+                            } else if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return CircularProgressIndicator();
+                            } else {
+                              return Container(
+                                child: Text(
+                                  "You don't have any transactions",
+                                  style: ksecondaryText.copyWith(
+                                      color: Colors.black),
+                                ),
+                              );
                             }
                           },
                         )
