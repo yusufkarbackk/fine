@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 part 'HomeScreen.dart';
 part 'IncomeScreen.dart';
@@ -18,3 +19,5 @@ part 'Wrapper.dart';
 part 'SignUpScreen.dart';
 part 'WelcomeScreen.dart';
 part 'SpendingScreen.dart';
+part 'ProfileScreen.dart';
+part 'ReportScreen.dart';

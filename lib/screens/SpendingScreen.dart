@@ -10,7 +10,7 @@ class SpendingScreen extends StatefulWidget {
 
 class _SpendingScreenState extends State<SpendingScreen> {
   final TextEditingController amountController = TextEditingController();
-  String categoryValue = 'Food';
+  String categoryValue = 'Shopping';
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
                           style: ksecondaryText.copyWith(color: Colors.black)),
                       DropdownButton<String>(
                         value: categoryValue,
-                        items: ['Food', 'Transportation', 'Entertainment']
+                        items: ['Foods & Baverages', 'Transportation', 'Entertainment', 'Shopping']
                             .map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,

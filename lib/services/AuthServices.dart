@@ -17,10 +17,6 @@ class AuthServices extends ChangeNotifier {
     }
   }
 
-  static Stream<User> get firebaseUserStream {
-    return _auth.authStateChanges();
-  }
-
   static Future<SignInSignUpResult> signUp(
       String email, String password, int amount, String name) async {
     try {
@@ -41,6 +37,10 @@ class AuthServices extends ChangeNotifier {
   }
 
   static Future<void> signOut() => _auth.signOut();
+
+  static Stream<User> get firebaseUserStream {
+    return _auth.authStateChanges();
+  }
 }
 
 class SignInSignUpResult {

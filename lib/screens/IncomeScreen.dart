@@ -53,7 +53,7 @@ class _IncomeScreenState extends State<IncomeScreen> {
                           style: ksecondaryText.copyWith(color: Colors.black)),
                       DropdownButton<String>(
                         value: categoryValue,
-                        items: ['Salary', 'Gifts'].map((String value) {
+                        items: ['Salary', 'Gifts', 'Payback', 'Investment'].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),

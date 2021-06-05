@@ -18,11 +18,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider.value(
       value: AuthServices.firebaseUserStream,
-      child: ChangeNotifierProvider(
-        create: (context) => Category(),
-        child: MaterialApp(
-          home: Wrapper(),
-        ),
+      child: MaterialApp(
+        home: Wrapper(),
       ),
     );
   }
