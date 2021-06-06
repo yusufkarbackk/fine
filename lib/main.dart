@@ -1,4 +1,3 @@
-import 'package:fine/models/Models.dart';
 import 'package:fine/screens/screens.dart';
 import 'package:fine/services/Services.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +18,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider.value(
       value: AuthServices.firebaseUserStream,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Wrapper(),
       ),
     );

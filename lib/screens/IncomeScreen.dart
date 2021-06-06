@@ -50,10 +50,12 @@ class _IncomeScreenState extends State<IncomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text("Income Category",
-                          style: ksecondaryText.copyWith(color: Colors.black)),
+                          style: ksecondaryText.copyWith(
+                              color: Colors.black, fontSize: 14)),
                       DropdownButton<String>(
                         value: categoryValue,
-                        items: ['Salary', 'Gifts', 'Payback', 'Investment'].map((String value) {
+                        items: ['Salary', 'Gifts', 'Payback', 'Investment']
+                            .map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -69,21 +71,30 @@ class _IncomeScreenState extends State<IncomeScreen> {
                 SizedBox(height: 52),
                 RaisedButton(
                   onPressed: () async {
-                    int amount = int.tryParse(amountController.text);
-                    TransactionModel transaction = TransactionModel(
-                        amount: amount,
-                        category: categoryValue,
-                        isIncome: true,
-                        time: DateTime.now(),
-                        userId: widget.id);
+                    if (amountController.text == "") {
+                      Flushbar(
+                        duration: Duration(seconds: 4),
+                        flushbarPosition: FlushbarPosition.TOP,
+                        backgroundColor: Color(0xFFFF5C83),
+                        message: 'Please insert your income amount',
+                      )..show(context);
+                    } else {
+                      int amount = int.tryParse(amountController.text);
+                      TransactionModel transaction = TransactionModel(
+                          amount: amount,
+                          category: categoryValue,
+                          isIncome: true,
+                          time: DateTime.now(),
+                          userId: widget.id);
 
-                    await AmountServices.addUserTransaction(transaction);
-                    await FineUserServices.updateUserBalance(
-                        transaction.userId, transaction.amount,
-                        lastAmount: widget.amount,
-                        isIncome: transaction.isIncome);
+                      await AmountServices.addUserTransaction(transaction);
+                      await FineUserServices.updateUserBalance(
+                          transaction.userId, transaction.amount,
+                          lastAmount: widget.amount,
+                          isIncome: transaction.isIncome);
 
-                    Navigator.pop(context);
+                      Navigator.pop(context);
+                    }
                   },
                   color: Colors.green[400],
                   child: Center(

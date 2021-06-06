@@ -5,8 +5,8 @@ class ReportModel {
   double transportation = 0;
   double entertainment = 0;
   double shopping = 0;
-  int salary;
-  int gift;
-  int payback;
-  int investment;
+  double salary = 0;
+  double gift = 0;
+  double payback = 0;
+  double investment = 0;
 }

@@ -47,14 +47,19 @@ class _SpendingScreenState extends State<SpendingScreen> {
                   height: 12,
                 ),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Spending Category",
-                          style: ksecondaryText.copyWith(color: Colors.black)),
+                          style: ksecondaryText.copyWith(
+                              color: Colors.black, fontSize: 14)),
                       DropdownButton<String>(
                         value: categoryValue,
-                        items: ['Foods & Baverages', 'Transportation', 'Entertainment', 'Shopping']
-                            .map((String value) {
+                        items: [
+                          'Foods & Baverages',
+                          'Transportation',
+                          'Entertainment',
+                          'Shopping'
+                        ].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -70,21 +75,30 @@ class _SpendingScreenState extends State<SpendingScreen> {
                 SizedBox(height: 52),
                 RaisedButton(
                   onPressed: () async {
-                    int amount = int.tryParse(amountController.text);
-                    TransactionModel transaction = TransactionModel(
-                        amount: amount,
-                        category: categoryValue,
-                        isIncome: false,
-                        time: DateTime.now(),
-                        userId: widget.id);
+                    if (amountController.text == "") {
+                      Flushbar(
+                        duration: Duration(seconds: 4),
+                        flushbarPosition: FlushbarPosition.TOP,
+                        backgroundColor: Color(0xFFFF5C83),
+                        message: 'Please insert your spending amount',
+                      )..show(context);
+                    } else {
+                      int amount = int.tryParse(amountController.text);
+                      TransactionModel transaction = TransactionModel(
+                          amount: amount,
+                          category: categoryValue,
+                          isIncome: false,
+                          time: DateTime.now(),
+                          userId: widget.id);
 
-                    await AmountServices.addUserTransaction(transaction);
-                    await FineUserServices.updateUserBalance(
-                        transaction.userId, transaction.amount,
-                        lastAmount: widget.amount,
-                        isIncome: transaction.isIncome);
+                      await AmountServices.addUserTransaction(transaction);
+                      await FineUserServices.updateUserBalance(
+                          transaction.userId, transaction.amount,
+                          lastAmount: widget.amount,
+                          isIncome: transaction.isIncome);
 
-                    Navigator.pop(context);
+                      Navigator.pop(context);
+                    }
                   },
                   color: Colors.red[400],
                   child: Center(

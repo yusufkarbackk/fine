@@ -90,7 +90,10 @@ class HomeScreen extends StatelessWidget {
                               style: knumberText,
                             );
                           } else {
-                            return CircularProgressIndicator();
+                            return SpinKitFadingCircle(
+                              color: Colors.white,
+                              size: 30,
+                            );
                           }
                         }),
                   ),

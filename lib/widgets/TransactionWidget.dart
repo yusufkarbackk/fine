@@ -44,7 +44,10 @@ class TransactionWidget extends StatelessWidget {
                           color: Colors.black, fontSize: 14))
                 ],
               ),
-              Text("$amount",
+              Text(
+                  NumberFormat.currency(
+                          locale: "id_IDR", decimalDigits: 0, symbol: "Rp ")
+                      .format(amount),
                   style: knumberText.copyWith(
                       color: isIncome ? Colors.lightGreen : Colors.red,
                       fontSize: 14))
