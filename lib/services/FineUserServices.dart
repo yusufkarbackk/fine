@@ -30,4 +30,10 @@ class FineUserServices extends ChangeNotifier {
     Stream<DocumentSnapshot> snapshot = _fineUserCollection.doc(id).snapshots();
     return snapshot;
   }
+
+  static transactionsMethodChecker(bool isAll, String month, String id) {
+    isAll
+        ? AmountServices.getTransactionsByMonth(month, id)
+        : AmountServices.getAllTransactions(id);
+  }
 }

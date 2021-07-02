@@ -6,5 +6,5 @@ class FineUser extends ChangeNotifier {
   final String email;
   final int amount;
 
-  FineUser(this.id, this.email, {this.name, this.amount = 0});
+  FineUser(this.id, this.email, {this.name = "No Name", this.amount = 0});
 }

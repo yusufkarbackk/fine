@@ -1,9 +1,19 @@
 import 'package:fine/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../services/Services.dart';
+import '../screens/screens.dart';
+import '../models/Models.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 part 'ActivitiesWidget.dart';
 part 'TransactionWidget.dart';
 part 'TextFieldWidget.dart';
 part 'CategoryDropdown.dart';
+part 'TransactionsSection.dart';
+part 'ActivitiesSection.dart';
+part 'HeaderSection.dart';
+part 'BalanceSection.dart';

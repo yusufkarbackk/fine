@@ -15,9 +15,9 @@ class _IncomeScreenState extends State<IncomeScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
+      onWillPop: () async {
         Navigator.pop(context);
-        return;
+        return true;
       },
       child: SafeArea(
         child: Scaffold(
@@ -79,12 +79,16 @@ class _IncomeScreenState extends State<IncomeScreen> {
                         message: 'Please insert your income amount',
                       )..show(context);
                     } else {
-                      int amount = int.tryParse(amountController.text);
+                      int amount = int.tryParse(amountController.text) ?? 0;
+                      String notFormatedMonth =
+                          DateFormat('MMMM').format(DateTime.now());
+
                       TransactionModel transaction = TransactionModel(
                           amount: amount,
                           category: categoryValue,
                           isIncome: true,
                           time: DateTime.now(),
+                          month: notFormatedMonth,
                           userId: widget.id);
 
                       await AmountServices.addUserTransaction(transaction);

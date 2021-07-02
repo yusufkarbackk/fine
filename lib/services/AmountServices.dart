@@ -10,7 +10,8 @@ class AmountServices {
       "time": transaction.time.millisecondsSinceEpoch,
       "category": transaction.category,
       "isIncome": transaction.isIncome,
-      "userId": transaction.userId
+      "userId": transaction.userId,
+      "month": transaction.month
     });
   }
 
@@ -30,6 +31,14 @@ class AmountServices {
     return snapshots;
   }
 
+  static getTransactionsByMonth(String month, String id) {
+    Stream<QuerySnapshot> snapshots = _amountCollection
+        .where('userId', isEqualTo: id)
+        .where('month', isEqualTo: month)
+        .snapshots();
+    return snapshots;
+  }
+
   static Map<String, double> mappingTransactions(
       List<QueryDocumentSnapshot> transactions) {
     ReportModel reportModel = ReportModel();
@@ -40,7 +49,7 @@ class AmountServices {
         } else {
           int valInt = transaction.data()['amount'];
           double valDouble = valInt.toDouble();
-          reportModel.foods = valDouble;
+          reportModel.foods += valDouble;
         }
       } else if (transaction.data()['category'] == 'Transportation') {
         if (transaction.data()['amount'] == null) {
@@ -48,7 +57,7 @@ class AmountServices {
         } else {
           int valInt = transaction.data()['amount'];
           double valDouble = valInt.toDouble();
-          reportModel.transportation = valDouble;
+          reportModel.transportation += valDouble;
         }
       } else if (transaction.data()['category'] == 'Entertainment') {
         if (transaction.data()['amount'] == null) {
@@ -56,7 +65,7 @@ class AmountServices {
         } else {
           int valInt = transaction.data()['amount'];
           double valDouble = valInt.toDouble();
-          reportModel.entertainment = valDouble;
+          reportModel.entertainment += valDouble;
         }
       } else if (transaction.data()['category'] == 'Shopping') {
         if (transaction.data()['amount'] == null) {
@@ -64,7 +73,7 @@ class AmountServices {
         } else {
           int valInt = transaction.data()['amount'];
           double valDouble = valInt.toDouble();
-          reportModel.shopping = valDouble;
+          reportModel.shopping += valDouble;
         }
       } else if (transaction.data()['category'] == 'Salary') {
         if (transaction.data()['amount'] == null) {
@@ -72,7 +81,7 @@ class AmountServices {
         } else {
           int valInt = transaction.data()['amount'];
           double valDouble = valInt.toDouble();
-          reportModel.salary = valDouble;
+          reportModel.salary += valDouble;
         }
       } else if (transaction.data()['category'] == 'Gifts') {
         if (transaction.data()['amount'] == null) {
@@ -80,7 +89,7 @@ class AmountServices {
         } else {
           int valInt = transaction.data()['amount'];
           double valDouble = valInt.toDouble();
-          reportModel.gift = valDouble;
+          reportModel.gift += valDouble;
         }
       } else if (transaction.data()['category'] == 'Payback') {
         if (transaction.data()['amount'] == null) {
@@ -88,7 +97,7 @@ class AmountServices {
         } else {
           int valInt = transaction.data()['amount'];
           double valDouble = valInt.toDouble();
-          reportModel.payback = valDouble;
+          reportModel.payback += valDouble;
         }
       } else if (transaction.data()['category'] == 'Investment') {
         if (transaction.data()['amount'] == null) {
@@ -96,15 +105,15 @@ class AmountServices {
         } else {
           int valInt = transaction.data()['amount'];
           double valDouble = valInt.toDouble();
-          reportModel.investment = valDouble;
+          reportModel.investment += valDouble;
         }
       }
     }
 
     Map<String, double> mapData = {
       'Foods & Baverages': reportModel.foods,
-      'Transportation': 5000.0,
-      'Entertainment': 3000.0,
+      'Transportation': reportModel.transportation,
+      'Entertainment': reportModel.entertainment,
       'Shopping': reportModel.shopping,
       'Salary': reportModel.salary,
       'Gifts': reportModel.gift,

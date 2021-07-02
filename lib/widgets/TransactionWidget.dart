@@ -4,12 +4,9 @@ class TransactionWidget extends StatelessWidget {
   final String text;
   final int amount;
   final bool isIncome;
+  final String dateString;
 
-  TransactionWidget({
-    this.text,
-    this.amount,
-    this.isIncome,
-  });
+  TransactionWidget({this.text, this.amount, this.isIncome, this.dateString});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,13 +41,22 @@ class TransactionWidget extends StatelessWidget {
                           color: Colors.black, fontSize: 14))
                 ],
               ),
-              Text(
-                  NumberFormat.currency(
-                          locale: "id_IDR", decimalDigits: 0, symbol: "Rp ")
-                      .format(amount),
-                  style: knumberText.copyWith(
-                      color: isIncome ? Colors.lightGreen : Colors.red,
-                      fontSize: 14))
+              Column(
+                children: [
+                  Text(
+                      NumberFormat.currency(
+                              locale: "id_IDR", decimalDigits: 0, symbol: "Rp ")
+                          .format(amount),
+                      style: knumberText.copyWith(
+                          color: isIncome ? Colors.lightGreen : Colors.red,
+                          fontSize: 14)),
+                  Text(
+                    dateString,
+                    style:
+                        knumberText.copyWith(color: Colors.black, fontSize: 12),
+                  )
+                ],
+              )
             ],
           ),
           SizedBox(

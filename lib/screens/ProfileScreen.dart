@@ -1,14 +1,21 @@
 part of 'screens.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   final String userId;
   ProfileScreen(this.userId);
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  GetResult getResult = null;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () {
+        onWillPop: () async {
           Navigator.pop(context);
-          return;
+          return true;
         },
         child: Scaffold(
           backgroundColor: kmainColor,
@@ -18,10 +25,10 @@ class ProfileScreen extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                   child: FutureBuilder<FineUser>(
-                    future: FineUserServices.getUser(userId),
+                    future: FineUserServices.getUser(widget.userId),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return Text("Name: ${snapshot.data.name}",
+                        return Text("Name: " + snapshot.data.name,
                             style: kmainText);
                       } else if (!snapshot.hasData) {
                         return Text("erro getting name");
@@ -36,7 +43,7 @@ class ProfileScreen extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24),
                   child: FutureBuilder<FineUser>(
-                    future: FineUserServices.getUser(userId),
+                    future: FineUserServices.getUser(widget.userId),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Text("Email: ${snapshot.data.email}",
@@ -69,6 +76,37 @@ class ProfileScreen extends StatelessWidget {
                           child: Text(
                         "Sign Out",
                         style: ksecondaryText,
+                      )),
+                    ),
+                  )),
+              SizedBox(
+                height: 40,
+              ),
+              Center(
+                  child: Text((getResult != null)
+                      ? getResult.email + " " + getResult.name
+                      : "error")),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: Container(
+                    width: 250,
+                    height: 30,
+                    child: RaisedButton(
+                      color: Colors.red[400],
+                      onPressed: () {
+                        GetResult.connectAPI("9").then((value) {
+                          setState(() {
+                            getResult = value;
+                          });
+                        });
+                      },
+                      child: Center(
+                          child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "get",
+                          style: ksecondaryText.copyWith(fontSize: 22),
+                        ),
                       )),
                     ),
                   )),

@@ -6,11 +6,13 @@ class TransactionModel {
   DateTime time;
   String category;
   bool isIncome;
+  String month;
 
   TransactionModel(
       {this.userId,
       this.amount,
       this.time,
       this.category,
+      this.month,
       this.isIncome = false});
 }

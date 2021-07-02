@@ -1,14 +1,23 @@
 part of 'screens.dart';
 
 class ReportScreen extends StatefulWidget {
+  final String userId;
+  ReportScreen(this.userId);
   @override
   _ReportScreenState createState() => _ReportScreenState();
 }
 
 class _ReportScreenState extends State<ReportScreen> {
+  String month = DateFormat('MMMM').format(DateTime.now());
+  bool isAll = false;
+  var transactionsChecker;
   @override
   Widget build(BuildContext context) {
     User userId = Provider.of<User>(context);
+    isAll
+        ? transactionsChecker = AmountServices.getAllTransactions(userId.uid)
+        : transactionsChecker =
+            AmountServices.getTransactionsByMonth(month, userId.uid);
     return WillPopScope(
       onWillPop: () {
         Navigator.pop(context);
@@ -18,27 +27,65 @@ class _ReportScreenState extends State<ReportScreen> {
           body: SafeArea(
         child: Column(
           children: [
+            DropdownButton<String>(
+              value: month,
+              items: [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December',
+                'All'
+              ].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (String newValue) {
+                setState(() {
+                  month = newValue;
+                  if (month == 'All') {
+                    isAll = true;
+                    transactionsChecker =
+                        AmountServices.getAllTransactions(userId.uid);
+                  } else {
+                    isAll = false;
+                    transactionsChecker = AmountServices.getTransactionsByMonth(
+                        month, userId.uid);
+                  }
+                });
+              },
+            ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 20),
               child: Center(
                 child: StreamBuilder<QuerySnapshot>(
-                    stream: AmountServices.getAllTransactions(userId.uid),
+                    stream: transactionsChecker,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         final transactions = snapshot.data.docs;
+
                         Map<String, double> reportData =
                             AmountServices.mappingTransactions(transactions);
 
                         return PieChart(
                           dataMap: reportData,
-                          animationDuration: Duration(milliseconds: 800),
+                          animationDuration: Duration(milliseconds: 1000),
                           chartLegendSpacing: 32,
-                          chartRadius: MediaQuery.of(context).size.width * 0.75,
+                          chartRadius: MediaQuery.of(context).size.width / 2,
                           initialAngleInDegree: 0,
                           chartType: ChartType.disc,
                           ringStrokeWidth: 32,
                           legendOptions: LegendOptions(
-                            showLegendsInRow: false,
+                            showLegendsInRow: true,
                             legendPosition: LegendPosition.bottom,
                             showLegends: true,
                             legendShape: BoxShape.circle,

@@ -15,9 +15,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
+      onWillPop: () async{
         Navigator.pop(context);
-        return;
+        return true;
       },
       child: Scaffold(
         body: SafeArea(
