@@ -8,6 +8,7 @@ class TextFieldWidget extends StatelessWidget {
   final TextStyle labelStyle;
   final BorderSide borderSide;
   final Function onChanged;
+  final String hintText;
 
   TextFieldWidget(
       {this.controller,
@@ -16,6 +17,7 @@ class TextFieldWidget extends StatelessWidget {
       this.isPassword = false,
       this.labelStyle,
       this.borderSide,
+      this.hintText,
       this.onChanged});
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class TextFieldWidget extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
           ),
+          hintText: hintText,
           focusedBorder: OutlineInputBorder(borderSide: borderSide),
           filled: true,
           fillColor: Colors.white,

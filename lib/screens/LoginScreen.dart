@@ -15,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         Navigator.pop(context);
         return true;
       },
@@ -55,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         keyboardType:
                                             TextInputType.emailAddress,
                                         decoration: InputDecoration(
+                                          hintText: "Enter your email",
                                           border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(20),
@@ -78,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         controller: passwordController,
                                         obscureText: true,
                                         decoration: InputDecoration(
+                                          hintText: "Enter your password",
                                           border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(20),
@@ -105,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Colors.green[400],
                                 ),
                               )
-                            : RaisedButton(
+                            : ElevatedButton(
                                 onPressed: isEmailValid && isPasswordValid
                                     ? () async {
                                         setState(() {
@@ -127,16 +129,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                             message: user.message,
                                           )..show(context);
                                         } else if (user.user != null) {
-                                          String userId = user.user.uid;
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      HomeScreen(userId)));
+                                                      HomeScreen()));
                                         }
                                       }
                                     : null,
-                                color: Colors.green[400],
                                 child: Center(
                                   child: Text("Login"),
                                 ),

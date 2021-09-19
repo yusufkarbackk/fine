@@ -9,7 +9,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  GetResult getResult = null;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -76,37 +75,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Text(
                         "Sign Out",
                         style: ksecondaryText,
-                      )),
-                    ),
-                  )),
-              SizedBox(
-                height: 40,
-              ),
-              Center(
-                  child: Text((getResult != null)
-                      ? getResult.email + " " + getResult.name
-                      : "error")),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Container(
-                    width: 250,
-                    height: 30,
-                    child: RaisedButton(
-                      color: Colors.red[400],
-                      onPressed: () {
-                        GetResult.connectAPI("9").then((value) {
-                          setState(() {
-                            getResult = value;
-                          });
-                        });
-                      },
-                      child: Center(
-                          child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "get",
-                          style: ksecondaryText.copyWith(fontSize: 22),
-                        ),
                       )),
                     ),
                   )),

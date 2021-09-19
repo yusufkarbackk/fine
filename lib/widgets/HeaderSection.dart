@@ -1,14 +1,19 @@
 part of 'widgets.dart';
 
-class HeaderSection extends StatelessWidget {
+class HeaderSection extends StatefulWidget {
   const HeaderSection({Key key}) : super(key: key);
 
+  @override
+  _HeaderSectionState createState() => _HeaderSectionState();
+}
+
+class _HeaderSectionState extends State<HeaderSection> {
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
 
     return FutureBuilder<FineUser>(
-        future: FineUserServices.getUser(user.uid),
+        future: FineUserServices.getUser(user.uid, context),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Row(

@@ -1,8 +1,6 @@
 part of 'screens.dart';
 
 class HomeScreen extends StatelessWidget {
-  final String userId;
-  HomeScreen(this.userId);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

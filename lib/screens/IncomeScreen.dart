@@ -1,9 +1,6 @@
 part of 'screens.dart';
 
 class IncomeScreen extends StatefulWidget {
-  final String id;
-  final int amount;
-  IncomeScreen(this.id, this.amount);
   @override
   _IncomeScreenState createState() => _IncomeScreenState();
 }
@@ -11,7 +8,7 @@ class IncomeScreen extends StatefulWidget {
 class _IncomeScreenState extends State<IncomeScreen> {
   final TextEditingController amountController = TextEditingController();
   String categoryValue = 'Salary';
-
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -69,42 +66,60 @@ class _IncomeScreenState extends State<IncomeScreen> {
                       ),
                     ]),
                 SizedBox(height: 52),
-                RaisedButton(
-                  onPressed: () async {
-                    if (amountController.text == "") {
-                      Flushbar(
-                        duration: Duration(seconds: 4),
-                        flushbarPosition: FlushbarPosition.TOP,
-                        backgroundColor: Color(0xFFFF5C83),
-                        message: 'Please insert your income amount',
-                      )..show(context);
-                    } else {
-                      int amount = int.tryParse(amountController.text) ?? 0;
-                      String notFormatedMonth =
-                          DateFormat('MMMM').format(DateTime.now());
+                isLoading
+                    ? SpinKitFadingCircle(
+                        size: 40,
+                        color: Colors.green,
+                      )
+                    : RaisedButton(
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = !isLoading;
+                          });
+                          if (amountController.text == "") {
+                            setState(() {
+                              isLoading = !isLoading;
+                            });
+                            Flushbar(
+                              duration: Duration(seconds: 4),
+                              flushbarPosition: FlushbarPosition.TOP,
+                              backgroundColor: Color(0xFFFF5C83),
+                              message: 'Please insert your income amount',
+                            )..show(context);
+                          } else {
+                            int amount =
+                                int.tryParse(amountController.text) ?? 0;
+                            String notFormatedMonth =
+                                DateFormat('MMMM').format(DateTime.now());
 
-                      TransactionModel transaction = TransactionModel(
-                          amount: amount,
-                          category: categoryValue,
-                          isIncome: true,
-                          time: DateTime.now(),
-                          month: notFormatedMonth,
-                          userId: widget.id);
+                            TransactionModel transaction = TransactionModel(
+                                amount: amount,
+                                category: categoryValue,
+                                isIncome: true,
+                                time: DateTime.now(),
+                                month: notFormatedMonth,
+                                userId: Provider.of<FineUserProvider>(context,
+                                        listen: false)
+                                    .getUserID);
 
-                      await AmountServices.addUserTransaction(transaction);
-                      await FineUserServices.updateUserBalance(
-                          transaction.userId, transaction.amount,
-                          lastAmount: widget.amount,
-                          isIncome: transaction.isIncome);
+                            await AmountServices.addUserTransaction(
+                                transaction);
+                            await FineUserServices.updateUserBalance(
+                                transaction.userId, transaction.amount,
+                                lastAmount: Provider.of<FineUserProvider>(
+                                        context,
+                                        listen: false)
+                                    .getUserBalance,
+                                isIncome: transaction.isIncome);
 
-                      Navigator.pop(context);
-                    }
-                  },
-                  color: Colors.green[400],
-                  child: Center(
-                    child: Text("Continue", style: ksecondaryText),
-                  ),
-                )
+                            Navigator.pop(context);
+                          }
+                        },
+                        color: Colors.green[400],
+                        child: Center(
+                          child: Text("Continue", style: ksecondaryText),
+                        ),
+                      )
               ],
             ),
           ),

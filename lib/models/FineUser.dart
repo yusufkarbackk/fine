@@ -1,6 +1,6 @@
 part of 'Models.dart';
 
-class FineUser extends ChangeNotifier {
+class FineUser {
   final String id;
   final String name;
   final String email;

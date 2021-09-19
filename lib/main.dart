@@ -1,3 +1,4 @@
+import 'package:fine/providers/fine_user_provider.dart';
 import 'package:fine/screens/screens.dart';
 import 'package:fine/services/Services.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider.value(
-      value: AuthServices.firebaseUserStream,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Wrapper(),
-      ),
-    );
+        value: AuthServices.firebaseUserStream,
+        child: MultiProvider(
+          providers: [
+            Provider<FineUserProvider>(create: (context) => FineUserProvider())
+          ],
+          builder: (context, widget) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: Wrapper(),
+            );
+          },
+        ));
   }
 }

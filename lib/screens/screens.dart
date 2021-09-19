@@ -1,4 +1,5 @@
 import 'package:fine/models/Models.dart';
+import 'package:fine/providers/fine_user_provider.dart';
 import 'package:fine/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 part 'HomeScreen.dart';
 part 'IncomeScreen.dart';

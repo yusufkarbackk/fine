@@ -10,8 +10,16 @@ class FineUserServices extends ChangeNotifier {
         .set({"email": user.email, "name": user.name, "amount": user.amount});
   }
 
-  static Future<FineUser> getUser(String id) async {
+  static Future<FineUser> getUser(String id, BuildContext context) async {
     DocumentSnapshot snapshot = await _fineUserCollection.doc(id).get();
+
+    Provider.of<FineUserProvider>(context, listen: false).setUserID = id;
+    Provider.of<FineUserProvider>(context, listen: false).setUsername =
+        snapshot.data()["name"];
+    Provider.of<FineUserProvider>(context, listen: false).setUserEmail =
+        snapshot.data()["email"];
+    Provider.of<FineUserProvider>(context, listen: false).setUserBalance =
+        snapshot.data()["amount"];
 
     return FineUser(id, snapshot.data()["email"],
         name: snapshot.data()["name"], amount: snapshot.data()["amount"]);

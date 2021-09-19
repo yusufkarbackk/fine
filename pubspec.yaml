@@ -35,6 +35,7 @@ dependencies:
   intl: ^0.16.1
   pie_chart: ^4.0.1
   provider: ^4.0.4
+  flutter_masked_text: ^0.7.0
 
 dev_dependencies:
   flutter_test:

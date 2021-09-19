@@ -1,4 +1,5 @@
 import 'package:fine/constants/constants.dart';
+import 'package:fine/providers/fine_user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

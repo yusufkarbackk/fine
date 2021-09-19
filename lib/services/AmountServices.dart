@@ -124,3 +124,10 @@ class AmountServices {
     return mapData;
   }
 }
+
+class TransactionResult {
+  final Transaction transaction;
+  final String message;
+
+  TransactionResult({this.transaction, this.message});
+}

@@ -9,7 +9,6 @@ class AuthServices extends ChangeNotifier {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
-      UserCredential authResult = result;
       User user = result.user;
       return SignInSignUpResult(authUser: null, user: user);
     } catch (e) {

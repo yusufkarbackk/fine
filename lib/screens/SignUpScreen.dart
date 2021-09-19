@@ -55,6 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           isNameValid = text.length > 0;
                                         });
                                       },
+                                      hintText: "Enter your name",
                                       controller: nameController,
                                       inputType: TextInputType.text,
                                       labelText: "Name",
@@ -69,8 +70,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               EmailValidator.validate(text);
                                         });
                                       },
+                                      hintText: "Enter your email",
                                       controller: emailController,
-                                      inputType: TextInputType.text,
+                                      inputType: TextInputType.emailAddress,
                                       labelText: "Email",
                                       isPassword: false,
                                       borderSide:
@@ -83,6 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           isPasswordValid = text.length >= 6;
                                         });
                                       },
+                                      hintText: "Enter your password",
                                       controller: passwordController,
                                       inputType: TextInputType.text,
                                       labelText: "Password",
@@ -97,6 +100,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           isAmountValid = text.length > 0;
                                         });
                                       },
+                                      hintText: "Enter your first balance",
                                       controller: amountController,
                                       inputType: TextInputType.number,
                                       labelText: "Balance",
@@ -118,12 +122,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           : Container(
                               width: double.infinity,
                               height: 50,
-                              child: RaisedButton(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.green[400],
+                                ),
                                 onPressed: () async {
+                                  setState(() {
+                                    isSignUp = true;
+                                  });
                                   if (isNameValid != true &&
                                       isEmailValid != true &&
                                       isPasswordValid != true &&
                                       isAmountValid != true) {
+                                    setState(() {
+                                      isSignUp = false;
+                                    });
                                     Flushbar(
                                       duration: Duration(seconds: 4),
                                       flushbarPosition: FlushbarPosition.TOP,
@@ -131,6 +144,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       message: "Please Fill All the Fields",
                                     )..show(context);
                                   } else if (isNameValid != true) {
+                                    setState(() {
+                                      isSignUp = false;
+                                    });
                                     Flushbar(
                                       duration: Duration(seconds: 4),
                                       flushbarPosition: FlushbarPosition.TOP,
@@ -138,6 +154,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       message: "Please Fill the Username Field",
                                     )..show(context);
                                   } else if (isEmailValid != true) {
+                                    setState(() {
+                                      isSignUp = false;
+                                    });
                                     Flushbar(
                                       duration: Duration(seconds: 4),
                                       flushbarPosition: FlushbarPosition.TOP,
@@ -145,6 +164,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       message: "Please Fill the Email Field",
                                     )..show(context);
                                   } else if (isPasswordValid != true) {
+                                    setState(() {
+                                      isSignUp = false;
+                                    });
                                     Flushbar(
                                       duration: Duration(seconds: 4),
                                       flushbarPosition: FlushbarPosition.TOP,
@@ -153,6 +175,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           "Please Fill the Password Field with 6 or More Characters",
                                     )..show(context);
                                   } else if (isAmountValid != true) {
+                                    setState(() {
+                                      isSignUp = false;
+                                    });
                                     Flushbar(
                                       duration: Duration(seconds: 4),
                                       flushbarPosition: FlushbarPosition.TOP,
@@ -180,17 +205,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         message: user.message,
                                       )..show(context);
                                     } else if (user.user != null) {
-                                      String userId = user.user.uid;
-
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  HomeScreen(userId)));
+                                                  HomeScreen()));
                                     }
                                   }
                                 },
-                                color: Colors.green[400],
                                 child: Center(
                                   child: Text(
                                     "Sign Up",

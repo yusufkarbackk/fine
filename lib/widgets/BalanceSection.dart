@@ -12,14 +12,6 @@ class BalanceSection extends StatelessWidget {
           stream: FineUserServices.getUserBalance(user.uid),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (snapshot.data.data()['amount'] < 0) {
-                return Text(
-                  NumberFormat.currency(
-                          locale: "id_IDR", decimalDigits: 0, symbol: "Rp ")
-                      .format(snapshot.data.data()['amount']),
-                  style: knumberText.copyWith(color: Colors.red[600]),
-                );
-              }
               return Text(
                 NumberFormat.currency(
                         locale: "id_IDR", decimalDigits: 0, symbol: "Rp ")

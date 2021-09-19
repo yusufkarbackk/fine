@@ -5,6 +5,6 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     User fineUser = Provider.of<User>(context);
 
-    return (fineUser == null) ? WelcomeScreen() : HomeScreen(fineUser.uid);
+    return (fineUser == null) ? WelcomeScreen() : HomeScreen();
   }
 }

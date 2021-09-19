@@ -27,6 +27,26 @@ class _ReportScreenState extends State<ReportScreen> {
           body: SafeArea(
         child: Column(
           children: [
+            Stack(children: [
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Align(
+                    alignment: Alignment.topLeft,
+                    child: GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Icon(
+                        Icons.arrow_back,
+                        size: 28,
+                      ),
+                    )),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Text("Report screen",
+                          style: ksecondaryText.copyWith(color: Colors.black))))
+            ]),
             DropdownButton<String>(
               value: month,
               items: [

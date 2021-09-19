@@ -13,15 +13,7 @@ class ActivitiesSection extends StatelessWidget {
               showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
-                  builder: (context) => FutureBuilder<FineUser>(
-                      future: FineUserServices.getUser(user.uid),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return IncomeScreen(user.uid, snapshot.data.amount);
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      }));
+                  builder: (context) => IncomeScreen());
             },
             child: ActivitiesWidget(
               icon: Icons.payments_rounded,
@@ -39,7 +31,7 @@ class ActivitiesSection extends StatelessWidget {
                   context: context,
                   isScrollControlled: true,
                   builder: (context) => FutureBuilder<FineUser>(
-                      future: FineUserServices.getUser(user.uid),
+                      future: FineUserServices.getUser(user.uid, context),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return SpendingScreen(user.uid, snapshot.data.amount);
@@ -60,8 +52,10 @@ class ActivitiesSection extends StatelessWidget {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ReportScreen(user.uid)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReportScreen(user.uid)));
             },
             child: ActivitiesWidget(
               icon: Icons.pie_chart_rounded,
